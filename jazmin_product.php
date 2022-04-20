@@ -231,7 +231,7 @@ else
 
 $totalRecords = 0;
 
-$colorFirstPO = $colorLastPO = $colorCountPO = $colorQuantityPO = 'w3-green';
+$colorFirstPO = $colorLastPO = $colorCountPO = $colorQuantityPO = $colorItemX = $colorItemY = 'w3-green';
 $sortFirstPOClass = $sortLastPOClass = $sortCountPOClass = $sortQuantityPOClass = "";
 if($dataValue == "")
 {
