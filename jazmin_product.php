@@ -78,13 +78,23 @@ $itemWeightToFilter = isset($_POST['itemWeightToFilter']) ? $_POST['itemWeightTo
 $added = "";
 if($process != '')
 {
-	$sql = "SELECT processCode FROM cadcam_process WHERE processName = '".$process."'";
+	$processArray = [];
+	// $sql = "SELECT processCode FROM cadcam_process WHERE processName = '".$process."'";
+	$sql = "SELECT processCode FROM cadcam_process WHERE processName IN('".implode("','",$process)."')";
 	$queryName = $db->query($sql);
 	if($queryName AND $queryName->num_rows > 0)
 	{
-		$resultName = $queryName->fetch_assoc();
-		$process = $resultName['processCode'];
-		$added .= " AND processCode = ".$process;
+		while($resultName = $queryName->fetch_assoc())
+		{
+			$processArray[] = $resultName['processCode'];
+			// $process = $resultName['processCode'];
+			// $added .= " AND processCode = ".$process;
+		}
+	}
+
+	if(count($processArray) > 0)
+	{
+		$added .= " AND processCode IN(".implode(",",$processArray).")";
 	}
 }
 
@@ -214,7 +224,14 @@ if( $showOpenPO == 1 )
 	$partIds = checkOpenParts();
 	if($process != '' OR $processGroup != '')
 	{
-		$sqlFilter .= " AND partId IN (SELECT DISTINCT partId FROM cadcam_partprocess WHERE partId IN (".implode(", ",$partIds).") ".$added.")" ;
+		if($_SESSION['idNumber']==true)
+		{
+			$sqlFilter .= " AND partId IN (".implode(", ",$partIds).") AND partId = (SELECT partId FROM cadcam_partprocess WHERE cadcam_partprocess.partId = cadcam_parts.partId ".$added." LIMIT 1)" ;
+		}
+		else
+		{
+			$sqlFilter .= " AND partId IN (SELECT DISTINCT partId FROM cadcam_partprocess WHERE partId IN (".implode(", ",$partIds).") ".$added.")" ;
+		}
 	}
 	else
 	{
@@ -393,7 +410,7 @@ createHeader($displayId, $version, $prevousLink);
 			{
 				foreach ($_POST as $key => $value) 
 				{
-					if(!in_array($key, ['showOpenPO', 'lastValue', 'dataValue', 'order', 'materialType', 'statusPart', 'partTypeFlag']))
+					if(!in_array($key, ['showOpenPO', 'lastValue', 'dataValue', 'order', 'materialType', 'statusPart', 'partTypeFlag', 'process']))
 					{
 						if(!is_array($value) AND trim($value) != "")
 						{

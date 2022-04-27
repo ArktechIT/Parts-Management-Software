@@ -43,6 +43,8 @@ if($queryProcessTools AND $queryProcessTools->num_rows > 0)
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<script src="js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
 <?php
@@ -50,9 +52,9 @@ if($queryProcessTools AND $queryProcessTools->num_rows > 0)
 
 ?>
 		
-		<table>
+		<!-- <table>
 			<tr align='center'>
-				<td style="width: 280px;"><?php echo displayText('L1407');//Tool ?></td>
+				<td style="width: 280px;"><?php //echo displayText('L1407');//Tool ?></td>
 			</tr>
 			<tr align='center'>
 				<td colspan="2" style="width: 250px;">
@@ -61,21 +63,39 @@ if($queryProcessTools AND $queryProcessTools->num_rows > 0)
 								<select name = "inputNote[]">
 								<option value = '0'></option>
 								<?php
-									foreach ($toolIdArray as $key) 
-									{
-										echo "<option value = '".$key."'>".$dataArray[$key]."</option>";
-									}
+									// foreach ($toolIdArray as $key) 
+									// {
+									// 	echo "<option value = '".$key."'>".$dataArray[$key]."</option>";
+									// }
 								?>
 						 		</select>
 						</div>
 					</div>
 				</td>
 			</tr>
-		</table>
+		</table> -->
+		<div class="container-fluid">
+			<div class="row">
+				<?php
+				
+				$sql="SELECT DISTINCT * FROM cadcam_processtools WHERE processSection = 0 OR processSection = ".$sectionId." ORDER BY toolName";
+				$querypTools = $db->query($sql);
+				while($resultpTools =$querypTools->fetch_assoc())
+				{
+				?>
+				<div class="col-auto">
+					<input class="form-check-input" type="checkbox" name="inputNote[]" value="<?php echo $resultpTools['toolId'];?>" id="" style="font-size:24px">
+					<label><?php echo $resultpTools['toolName']; ?> <?php echo $resultpTools['dataOne']; ?> <?php echo $resultpTools['dataTwo']; ?> <?php echo $resultpTools['dataThree']; ?> <?php echo $resultpTools['dataFour']; ?> <?php echo $resultpTools['dataFive']; ?></label>
+				</div>
+				<?php
+				}
+				?>
+			</div>
+		</div>
 
-
-		<div id="submitButton">
-			<center><input type ="submit" name =" submit" value = "<?php echo displayText('B4');//Add ?>" class="art-button"><center>
+		<div id="submitButton" class="text-center">
+			<!-- <center><input type ="submit" name =" submit" value = "<?php //echo displayText('B4');//Add ?>" class="art-button"><center> -->
+			<input type="submit" value="Submit" class="btn btn-primary" value="<?php echo displayText('B4');//Add ?>">
 		</div>
 
 </form>										  

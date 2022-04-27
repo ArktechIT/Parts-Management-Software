@@ -1774,6 +1774,7 @@ if($partsQueryResult['PVC'] == 1)
                             echo "<th style='vertical-align:middle;' class='w3-center'>".displayText('L61')."</th>";
                             echo "<th style='vertical-align:middle;' class='w3-center'>".displayText('L35')."</th>";
                             echo "<th style='vertical-align:middle;' class='w3-center'>".displayText('L94')."</th>";
+                            echo "<th style='vertical-align:middle;' class='w3-center'>NEW TOOLS</th>";
                             echo "<th style='vertical-align:middle;' class='w3-center'>MACHINE</th>";
                             echo "<th style='vertical-align:middle;' class='w3-center'>JIGS</th>";
                             echo "<th style='vertical-align:middle;' class='w3-center'>1</th>";
@@ -1986,7 +1987,40 @@ if($partsQueryResult['PVC'] == 1)
 
                                         //TOOL START HERE
                                         echo "<td class = 'tresult'>";
-                                            echo $toolName;
+                                        echo $toolName;
+                                            
+                                        echo "<ul style='list-style-type:square'>";
+
+                                            $sql = "SELECT toolId FROM cadcam_processtoolsdetails WHERE processCode = ".$getPartProcessResult['processCode']." AND partId = ".$_GET['partId'];
+                                            $processDetailQuery=$db->query($sql);
+                                            while($processDetailQueryResult = $processDetailQuery->fetch_assoc())
+                                            {
+                                                $toolId = $processDetailQueryResult['toolId'];
+                                                $sql = "SELECT * FROM cadcam_processtools WHERE toolId = ".$toolId;
+                                                $queryTool=$db->query($sql);
+                                                $resultTool=$queryTool->fetch_assoc();
+
+                                                $toolName = $resultTool['toolName'];
+                                            
+                                                echo "<li>".$toolName."</li>";
+                                                $toolCounter++;
+                                            }
+                                        echo "</ul>";
+                                        ?>
+                                            <a onclick="openTinyBox('250','1000','carlo_addToolForm.php?partId=<?php echo $_GET['partId'];?>&processCode=<?php echo $getPartProcessResult['processCode']; ?>')"><img src = '../Common Data/Templates/images/add1.png' width = '20' height = '20' align='right'></a>
+                                        <?php		
+                                        if($toolCounter>0)
+                                        {
+                                        ?>
+                                            <a onclick="TINY.box.show({url:'carlo_updateToolForm.php?partId=<?php echo $_GET['partId']; ?>&processCode=<?php echo $getPartProcessResult['processCode']; ?>',width:'280',height:'',opacity:10,topsplit:6,animate:false,close:true,openjs:function(){openJSedit()}})"><img src = '../Common Data/Templates/images/edit1.png' width = '20' height = '20' align='right'></a>
+                                        <?php
+                                        }
+
+
+                                        echo "</td>";
+                                        //TAMANG NEW TOOL START HERE
+                                        echo "<td class = 'tresult'>";
+                                        //echo $toolName;
                                             
                                             echo "<ul style='list-style-type:square'>";
 
@@ -1996,28 +2030,29 @@ if($partsQueryResult['PVC'] == 1)
                                                 {
                                                     $toolId = $processDetailQueryResult['toolId'];
                                                     $sql = "SELECT * FROM cadcam_processtools WHERE toolId = ".$toolId." AND identifier = 0";
-                                                    $queryTool=$db->query($sql);
-                                                    $resultTool=$queryTool->fetch_assoc();
-                                                    $totalTools = $queryTool->num_rows;
+                                                    $queryToolNew=$db->query($sql);
+                                                    $resultToolNew=$queryToolNew->fetch_assoc();
+                                                    $totalNewTools = $queryToolNew->num_rows;
 
-                                                    $toolName = $resultTool['toolName'];
+                                                    $toolNameNew = $resultToolNew['toolName'];
                                                 
-                                                    echo "<li>".$toolName."</li>";
+                                                    echo "<li>".$toolNameNew."</li>";
                                                     //$toolCounter++;
                                                 }
                                             echo "</ul>";
                                             ?>
                                                 <a onclick="openTinyBox('250','580','carlo_addToolFormCopy.php?partId=<?php echo $_GET['partId'];?>&processCode=<?php echo $getPartProcessResult['processCode']; ?>&identifier=0')"><img src = '../Common Data/Templates/images/add1.png' width = '20' height = '20' align='right'></a>
                                             <?php		
-                                            if($totalTools > 0)
+                                            if($totalNewTools > 0)
                                             {
                                             ?>
                                                 <a onclick="TINY.box.show({url:'carlo_updateToolFormCopy.php?partId=<?php echo $_GET['partId']; ?>&processCode=<?php echo $getPartProcessResult['processCode']; ?>&identifier=0',width:'280',height:'',opacity:10,topsplit:6,animate:false,close:true,openjs:function(){openJSedit()}})"><img src = '../Common Data/Templates/images/edit1.png' width = '20' height = '20' align='right'></a>
                                             <?php
                                             }
-
                                         echo "</td>";
-                                        //TOOL END HERE 
+
+                                        //TAMANG
+                                        // NEW TOOL END HERE 
                                         // MACHINE STARTS HERE------------------------------------------------TAMANG 2022-03-23 START HERE---------------------------------------------------------------------------------
                                         echo "<td class = 'tresult'>";
                                             //echo $toolName;

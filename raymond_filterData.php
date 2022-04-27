@@ -33,7 +33,7 @@ $metalThickness = (isset($_POST['metalThickness'])) ? $_POST['metalThickness'] :
 $sheetWorksFlag = (isset($_POST['sheetWorksFlag'])) ? $_POST['sheetWorksFlag'] : '';
 $firstPODate = (isset($_POST['firstPODate'])) ? $_POST['firstPODate'] : '';
 $lastPODate = (isset($_POST['lastPODate'])) ? $_POST['lastPODate'] : '';
-$processCode = (isset($_POST['process'])) ? $_POST['process'] : '';
+$processCode = (isset($_POST['process'])) ? $_POST['process'] : [];
 $processGroup = (isset($_POST['processGroup'])) ? $_POST['processGroup'] : '';
 $partTypeFlag = (isset($_POST['partTypeFlag'])) ? $_POST['partTypeFlag'] : '';
 $xOperator = (isset($_POST['xOperator'])) ? $_POST['xOperator'] : '';
@@ -110,7 +110,8 @@ if($processCodeArray != NULL)
             $processSectionArray[] = $resultName['processSection'];
             $processName = $resultName['processName'];
 
-            $selected = ($processCode == $processCodeVal) ? 'selected' : '';
+            // $selected = ($processCode == $processCodeVal) ? 'selected' : '';
+            $selected = (count($processCode) > 0 AND in_array($processName,$processCode)) ? 'selected' : '';
             $processNames .= "<option value='".$processName."' ".$selected.">".$processName."</option>";
         }
     }
@@ -321,8 +322,8 @@ echo "<div class='row w3-padding-top'>";
     echo "</div>";
     echo "<div class='col-md-2'>";
         echo "<label>".displayText('L59', 'utf8', 0, 0, 1)."</label>";
-        echo "<select form='formFilter' id='process' class='w3-input w3-border' name='process'>";
-        echo "<option value=''></option>";
+        echo "<select form='formFilter' id='process' class='w3-input w3-border' name='process[]' multiple='multiple'>";
+        // echo "<option value=''></option>";
             echo $processNames;
         echo "</select>";
     echo "</div>";
@@ -437,7 +438,7 @@ echo "</div>";
 </style>
 <script>
 $(document).ready(function(){
-    $('#statusPart, #partTypeFlag, #materialType, #statusPart').multiselect({
+    $('#statusPart, #partTypeFlag, #materialType, #process').multiselect({
         maxHeight               : 300,
         includeSelectAllOption  : true,
         buttonClass             :'w3-input w3-border w3-pale-yellow',
