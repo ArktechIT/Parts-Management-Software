@@ -9,6 +9,156 @@ include("PHP Modules/anthony_wholeNumber.php");
 include("PHP Modules/rose_prodfunctions.php");
 ini_set("display_errors", "on");
 
+Class DisplayCurrentFilter
+{
+	private $data;
+	private $db;
+	private $keyNameArray = [];
+	private $excludeFilterArray = [];
+
+	public function __construct($data)
+	{
+		include('PHP Modules/mysqliConnection.php');
+		$this->db = $db;
+		$this->data = $data;
+	}
+
+	public function displayData()
+	{
+		$this->checkValue();
+		$filteredDataArray = $this->filterData();
+
+		$outputArray = [];
+		foreach($filteredDataArray as $key => $value)
+		{
+			$outputArray[] = "({$this->checkNewKey($key)} : {$this->readableValue($key)})";
+		}
+
+		if(count($outputArray) > 0) echo "Current Filter : ".implode(" ",$outputArray);
+	}
+
+	public function exludeData($excludeFilterArray)
+	{
+		$this->excludeFilterArray = $excludeFilterArray;
+	}
+
+	public function changeKeyName($oldKey,$newKey)
+	{
+		$this->keyNameArray[$oldKey] = $newKey;
+	}
+
+	private function filterData()
+	{
+		return array_diff_key($this->data, array_flip($this->excludeFilterArray));
+	}
+
+	private function checkValue()
+	{
+		$this->data = array_filter($this->data);
+	}
+
+	private function rangeFilter($operator,$fromValue,$toValue='')
+	{
+		if($operator=='RANGE')	return $fromValue." - ".$toValue;
+
+		return $operator." ".$fromValue;		
+	}
+
+	private function checkNewKey($key)
+	{
+		return (isset($this->keyNameArray[$key])) ? $this->keyNameArray[$key] : ucwords(implode(" ",preg_split('/(?=[A-Z])/',$key)));
+	}
+
+	private function readableValue($key)
+	{
+		if($key=='customerId')
+		{
+			$sql = "SELECT customerAlias FROM sales_customer WHERE customerId = {$this->data[$key]} LIMIT 1";
+			$queryCustomer = $this->db->query($sql);
+			if($queryCustomer AND $queryCustomer->num_rows > 0)
+			{
+				$resultCustomer = $queryCustomer->fetch_assoc();
+				return $resultCustomer['customerAlias'];
+			}
+		}
+
+		if($key=='statusPart')
+		{
+			$statusArray = ['Active','Inactive','Pending'];
+
+			$newStatusArray = array_map(function($val) use ($statusArray){
+				return $statusArray[$val];
+			},$this->data[$key]);
+
+			return implode(",",$newStatusArray);
+		}
+
+		if($key=='partTypeFlag')
+		{
+			$partTypeArray = ['ASSY','SUBPART','SINGLE'];
+
+			$newPartTypeArray = array_map(function($val) use ($partTypeArray){
+				return $partTypeArray[$val];
+			},$this->data[$key]);
+
+			return implode(",",$newPartTypeArray);
+		}
+
+		if($key=='processGroup')
+		{
+			$sql = "SELECT sectionName FROM ppic_section WHERE sectionId = {$this->data[$key]} LIMIT 1";
+			$querySection = $this->db->query($sql);
+			if($querySection AND $querySection->num_rows > 0)
+			{
+				$resultSection = $querySection->fetch_assoc();
+				return $resultSection['sectionName'];
+			}
+		}
+
+		if($key=='partl')
+		{
+			return $this->rangeFilter($this->data['lengthOperator'],$this->data[$key]);
+		}
+
+		if($key=='partw')
+		{
+			return $this->rangeFilter($this->data['widthOperator'],$this->data[$key]);
+		}
+
+		if($key=='parth')
+		{
+			return $this->rangeFilter($this->data['heightOperator'],$this->data[$key]);
+		}
+
+		if($key=='itemxFromFilter')
+		{
+			return $this->rangeFilter($this->data['itemxFilter'],$this->data[$key],$this->data['itemxToFilter']);
+		}
+
+		if($key=='itemyFromFilter')
+		{
+			return $this->rangeFilter($this->data['itemyFilter'],$this->data[$key],$this->data['itemyToFilter']);
+		}
+
+		if($key=='itemWeightFromFilter')
+		{
+			return $this->rangeFilter($this->data['itemWeightFilter'],$this->data[$key],$this->data['itemWeightToFilter']);
+		}
+
+		if($key=='showOpenPO')
+		{
+			return ($this->data[$key]==1) ? 'Yes' : 'No';
+		}
+
+		if(is_array($this->data[$key]))
+		{
+			return implode(",",$this->data[$key]);
+		}
+
+		return $this->data[$key];
+	}
+}
+
 function checkOpenParts()
 {
 	include('PHP Modules/mysqliConnection.php');
@@ -458,7 +608,53 @@ createHeader($displayId, $version, $prevousLink);
 				<button type="button" class='w3-btn w3-tiny w3-round w3-purple' name="partsComment" id="partsComment" onclick="partsComment()"><i class='fa fa-plus'></i>&emsp;<b>PARTS COMMENT</i></button>
 				<!-- TAMANG -->
 				<button class='w3-btn w3-tiny w3-round w3-green' onclick="location.href='';"><i class='fa fa-refresh'></i>&emsp;<b><?php echo displayText('L436', 'utf8', 0, 0, 1);?></b></button>
-				
+			</div>
+		</div>
+	</div>
+	<div class="row w3-padding-top">
+		<div class='col-md-12'>
+			<div class='w3-right'>
+				<?php
+				if($_SESSION['idNumber']==true)
+				{
+					$excludeFilterArray = [
+						'dataValue',
+						'order',
+						'lengthOperator',
+						'widthOperator',
+						'heightOperator',
+						'itemxFilter',
+						'itemxToFilter',
+						'itemyFilter',
+						'itemyToFilter',
+						'itemWeightFilter',
+						'lastValue'
+					];	
+					$currFilter = new DisplayCurrentFilter($_POST);
+					$currFilter->exludeData($excludeFilterArray);
+					$currFilter->changeKeyName('customerId',displayText('L24', 'utf8', 0, 0, 1));
+					$currFilter->changeKeyName('partName',displayText('L30', 'utf8', 0, 0, 1));
+					$currFilter->changeKeyName('partNumber',displayText('L28', 'utf8', 0, 0, 1));
+					$currFilter->changeKeyName('partTypeFlag',displayText('L111', 'utf8', 0, 0, 1));
+					$currFilter->changeKeyName('partl',displayText('L74', 'utf8', 0, 0, 1));
+					$currFilter->changeKeyName('partw',displayText('L75', 'utf8', 0, 0, 1));
+					$currFilter->changeKeyName('parth',displayText('L76', 'utf8', 0, 0, 1));
+					$currFilter->changeKeyName('materialType',displayText('L566', 'utf8', 0, 0, 1));
+					$currFilter->changeKeyName('metalThickness',displayText('L184', 'utf8', 0, 0, 1));
+					$currFilter->changeKeyName('statusPart',displayText('L172', 'utf8', 0, 0, 1));
+					$currFilter->changeKeyName('firstPODate',displayText('L4162', 'utf8', 0, 0, 1));
+					$currFilter->changeKeyName('lastPODate',displayText('L4163', 'utf8', 0, 0, 1));
+					$currFilter->changeKeyName('process',displayText('L59', 'utf8', 0, 0, 1));
+					$currFilter->changeKeyName('processGroup',displayText('L61', 'utf8', 0, 0, 1));
+					$currFilter->changeKeyName('partsComment',displayText('L636', 'utf8', 0, 0, 1));
+					$currFilter->changeKeyName('itemxFromFilter',displayText('L70', 'utf8', 0, 0, 1));
+					$currFilter->changeKeyName('itemyFromFilter',displayText('L71', 'utf8', 0, 0, 1));
+					$currFilter->changeKeyName('itemWeightFromFilter',displayText('L72', 'utf8', 0, 0, 1));
+					$currFilter->changeKeyName('showOpenPO','Show Open PO');
+
+					$currFilter->displayData();
+				}				
+				?>		
 			</div>
 		</div>
 	</div>
