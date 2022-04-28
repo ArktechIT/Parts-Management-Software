@@ -34,7 +34,7 @@ Class DisplayCurrentFilter
 			$outputArray[] = "({$this->checkNewKey($key)} : {$this->readableValue($key)})";
 		}
 
-		if(count($outputArray) > 0) echo "Current Filter : ".implode(" ",$outputArray);
+		if(count($outputArray) > 0) echo displayText("L4568", "utf8", 0, 0, 1)." : ".implode(" ",$outputArray);
 	}
 
 	public function exludeData($excludeFilterArray)
@@ -650,7 +650,7 @@ createHeader($displayId, $version, $prevousLink);
 					$currFilter->changeKeyName('itemxFromFilter',displayText('L70', 'utf8', 0, 0, 1));
 					$currFilter->changeKeyName('itemyFromFilter',displayText('L71', 'utf8', 0, 0, 1));
 					$currFilter->changeKeyName('itemWeightFromFilter',displayText('L72', 'utf8', 0, 0, 1));
-					$currFilter->changeKeyName('showOpenPO','Show Open PO');
+					$currFilter->changeKeyName('showOpenPO',displayText('L4569', 'utf8', 0, 0, 1));
 
 					$currFilter->displayData();
 				}				
