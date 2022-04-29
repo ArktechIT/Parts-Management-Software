@@ -145,6 +145,21 @@ Class DisplayCurrentFilter
 			return $this->rangeFilter($this->data['itemWeightFilter'],$this->data[$key],$this->data['itemWeightToFilter']);
 		}
 
+		if($key=='itemLengthFromFilter')
+		{
+			return $this->rangeFilter($this->data['itemLengthFilter'],$this->data[$key],$this->data['itemLengthToFilter']);
+		}
+
+		if($key=='itemWidthFromFilter')
+		{
+			return $this->rangeFilter($this->data['itemWidthFilter'],$this->data[$key],$this->data['itemWidthToFilter']);
+		}
+
+		if($key=='itemHeightFromFilter')
+		{
+			return $this->rangeFilter($this->data['itemHeightFilter'],$this->data[$key],$this->data['itemHeightToFilter']);
+		}
+
 		if($key=='showOpenPO')
 		{
 			return ($this->data[$key]==1) ? 'Yes' : 'No';
@@ -224,6 +239,15 @@ $itemyToFilter = isset($_POST['itemyToFilter']) ? $_POST['itemyToFilter'] : '';
 $itemWeightFilter = isset($_POST['itemWeightFilter']) ? $_POST['itemWeightFilter'] : '>=';
 $itemWeightFromFilter = isset($_POST['itemWeightFromFilter']) ? $_POST['itemWeightFromFilter'] : '';
 $itemWeightToFilter = isset($_POST['itemWeightToFilter']) ? $_POST['itemWeightToFilter'] : '';
+$itemLengthFilter = isset($_POST['itemLengthFilter']) ? $_POST['itemLengthFilter'] : '>=';
+$itemLengthFromFilter = isset($_POST['itemLengthFromFilter']) ? $_POST['itemLengthFromFilter'] : '';
+$itemLengthToFilter = isset($_POST['itemLengthToFilter']) ? $_POST['itemLengthToFilter'] : '';
+$itemWidthFilter = isset($_POST['itemWidthFilter']) ? $_POST['itemWidthFilter'] : '>=';
+$itemWidthFromFilter = isset($_POST['itemWidthFromFilter']) ? $_POST['itemWidthFromFilter'] : '';
+$itemWidthToFilter = isset($_POST['itemWidthToFilter']) ? $_POST['itemWidthToFilter'] : '';
+$itemHeightFilter = isset($_POST['itemHeightFilter']) ? $_POST['itemHeightFilter'] : '>=';
+$itemHeightFromFilter = isset($_POST['itemHeightFromFilter']) ? $_POST['itemHeightFromFilter'] : '';
+$itemHeightToFilter = isset($_POST['itemHeightToFilter']) ? $_POST['itemHeightToFilter'] : '';
 
 $added = "";
 if($process != '')
@@ -347,6 +371,51 @@ else
     }
 }
 
+if($itemLengthFilter == "RANGE")
+{
+    if($itemLengthFromFilter != "" AND $itemLengthToFilter != "")
+    {
+        $sqlFilter .= " AND itemLength BETWEEN '".$itemLengthFromFilter."' AND '".$itemLengthToFilter."'"; 
+    }
+}
+else
+{
+    if($itemLengthFromFilter != "")
+    {
+        $sqlFilter .= " AND itemLength ".$itemLengthFilter." '".$itemLengthFromFilter."'";
+    }
+}
+
+if($itemWidthFilter == "RANGE")
+{
+    if($itemWidthFromFilter != "" AND $itemWidthToFilter != "")
+    {
+        $sqlFilter .= " AND itemWidth BETWEEN '".$itemWidthFromFilter."' AND '".$itemWidthToFilter."'"; 
+    }
+}
+else
+{
+    if($itemWidthFromFilter != "")
+    {
+        $sqlFilter .= " AND itemWidth ".$itemWidthFilter." '".$itemWidthFromFilter."'";
+    }
+}
+
+if($itemHeightFilter == "RANGE")
+{
+    if($itemHeightFromFilter != "" AND $itemHeightToFilter != "")
+    {
+        $sqlFilter .= " AND itemHeight BETWEEN '".$itemHeightFromFilter."' AND '".$itemHeightToFilter."'"; 
+    }
+}
+else
+{
+    if($itemHeightFromFilter != "")
+    {
+        $sqlFilter .= " AND itemHeight ".$itemHeightFilter." '".$itemHeightFromFilter."'";
+    }
+}
+
 $lastValue = "checked";
 $showOpenPOCheckData = "checked";
 
@@ -398,7 +467,7 @@ else
 
 $totalRecords = 0;
 
-$colorFirstPO = $colorLastPO = $colorCountPO = $colorQuantityPO = $colorItemX = $colorItemY = 'w3-green';
+$colorFirstPO = $colorLastPO = $colorCountPO = $colorQuantityPO = $colorItemX = $colorItemY = $colorItemHeight = $colorItemWidth = $colorItemLength = 'w3-green';
 $sortFirstPOClass = $sortLastPOClass = $sortCountPOClass = $sortQuantityPOClass = "";
 if($dataValue == "")
 {
@@ -459,6 +528,33 @@ else
 	
 		$sortItemYClass = "<i class='fa fa-sort-amount-desc'></i>&emsp;";
 		if($order == 'ASC') $sortItemYClass = "<i class='fa fa-sort-amount-asc'></i>&emsp;";
+	}
+
+	if($dataValue == 'itemHeight')
+	{
+		$sqlFilter .= " ORDER BY itemHeight ".$order;
+		$colorItemHeight = 'w3-pink';
+	
+		$sortItemHeightClass = "<i class='fa fa-sort-amount-desc'></i>&emsp;";
+		if($order == 'ASC') $sortItemHeightClass = "<i class='fa fa-sort-amount-asc'></i>&emsp;";
+	}
+
+	if($dataValue == 'itemWidth')
+	{
+		$sqlFilter .= " ORDER BY itemWidth ".$order;
+		$colorItemWidth = 'w3-pink';
+	
+		$sortItemWidthClass = "<i class='fa fa-sort-amount-desc'></i>&emsp;";
+		if($order == 'ASC') $sortItemWidthClass = "<i class='fa fa-sort-amount-asc'></i>&emsp;";
+	}
+
+	if($dataValue == 'itemLength')
+	{
+		$sqlFilter .= " ORDER BY itemLength ".$order;
+		$colorItemLength = 'w3-pink';
+	
+		$sortItemLengthClass = "<i class='fa fa-sort-amount-desc'></i>&emsp;";
+		if($order == 'ASC') $sortItemLengthClass = "<i class='fa fa-sort-amount-asc'></i>&emsp;";
 	}
 
 }
@@ -628,6 +724,12 @@ createHeader($displayId, $version, $prevousLink);
 						'itemyFilter',
 						'itemyToFilter',
 						'itemWeightFilter',
+						'itemLengthFilter',
+						'itemLengthToFilter',
+						'itemWidthFilter',
+						'itemWidthToFilter',
+						'itemHeightFilter',
+						'itemHeightToFilter',
 						'lastValue'
 					];	
 					$currFilter = new DisplayCurrentFilter($_POST);
@@ -650,6 +752,9 @@ createHeader($displayId, $version, $prevousLink);
 					$currFilter->changeKeyName('itemxFromFilter',displayText('L70', 'utf8', 0, 0, 1));
 					$currFilter->changeKeyName('itemyFromFilter',displayText('L71', 'utf8', 0, 0, 1));
 					$currFilter->changeKeyName('itemWeightFromFilter',displayText('L72', 'utf8', 0, 0, 1));
+					$currFilter->changeKeyName('itemLengthFromFilter',displayText('L74', 'utf8', 0, 0, 1));
+					$currFilter->changeKeyName('itemWidthFromFilter',displayText('L75', 'utf8', 0, 0, 1));
+					$currFilter->changeKeyName('itemHeightFromFilter',displayText('L76', 'utf8', 0, 0, 1));
 					$currFilter->changeKeyName('showOpenPO',displayText('L4569', 'utf8', 0, 0, 1));
 
 					$currFilter->displayData();
@@ -679,9 +784,12 @@ createHeader($displayId, $version, $prevousLink);
 					<!-- <th class='w3-center' style='vertical-align:middle;'><?php echo displayText('L399');?></th> -->
 					<th class='w3-center <?php echo $colorItemX; ?> itemXClass '  data-id='itemX' style='cursor:pointer; vertical-align:middle;'><?php echo $sortItemXClass; ?><?php echo displayText('L398');?></th>
 					<th class='w3-center <?php echo $colorItemY; ?> itemYClass '  data-id='itemY' style='cursor:pointer; vertical-align:middle;'><?php echo $sortItemYClass; ?><?php echo displayText('L399');?></th>
-					<th class='w3-center' style='vertical-align:middle;'><?php echo displayText('L76');?></th>
-					<th class='w3-center' style='vertical-align:middle;'><?php echo displayText('L75');?></th>
-					<th class='w3-center' style='vertical-align:middle;'><?php echo displayText('L74');?></th>
+					<!-- <th class='w3-center' style='vertical-align:middle;'><?php echo displayText('L76');?></th> -->
+					<!-- <th class='w3-center' style='vertical-align:middle;'><?php echo displayText('L75');?></th> -->
+					<!-- <th class='w3-center' style='vertical-align:middle;'><?php echo displayText('L74');?></th> -->
+					<th class='w3-center <?php echo $colorItemHeight; ?> itemHeightClass '  data-id='itemHeight' style='cursor:pointer; vertical-align:middle;'><?php echo $sortItemHeightClass; ?><?php echo displayText('L76');?></th>
+					<th class='w3-center <?php echo $colorItemWidth; ?> itemWidthClass '  data-id='itemWidth' style='cursor:pointer; vertical-align:middle;'><?php echo $sortItemWidthClass; ?><?php echo displayText('L75');?></th>
+					<th class='w3-center <?php echo $colorItemLength; ?> itemLengthClass '  data-id='itemLength' style='cursor:pointer; vertical-align:middle;'><?php echo $sortItemLengthClass; ?><?php echo displayText('L74');?></th>
 					<th class='w3-center' style='vertical-align:middle;'><?php echo displayText('L72');?></th>
 					<?php
 					if($showPrice == 1)
@@ -881,7 +989,7 @@ PMSTemplates::includeFooter();
 			$("#formFilter").submit();
 		}); */
 
-        $('.firstPOdateClass, .lastPOdateClass, .poCountClass, .poQuantityClass, .itemXClass, .itemYClass').click(function(){
+        $('.firstPOdateClass, .lastPOdateClass, .poCountClass, .poQuantityClass, .itemXClass, .itemYClass, .itemHeightClass, .itemWidthClass, .itemLengthClass').click(function(){
 			var id = $(this).attr("data-id");
 			var valueText = $("#dataValue").val();
 			var order = "<?php echo $order; ?>";

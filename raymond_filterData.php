@@ -71,6 +71,15 @@ $itemyToFilter = isset($_POST['itemyToFilter']) ? $_POST['itemyToFilter'] : '';
 $itemWeightFilter = isset($_POST['itemWeightFilter']) ? $_POST['itemWeightFilter'] : '>=';
 $itemWeightFromFilter = isset($_POST['itemWeightFromFilter']) ? $_POST['itemWeightFromFilter'] : '';
 $itemWeightToFilter = isset($_POST['itemWeightToFilter']) ? $_POST['itemWeightToFilter'] : '';
+$itemLengthFilter = isset($_POST['itemLengthFilter']) ? $_POST['itemLengthFilter'] : '>=';
+$itemLengthFromFilter = isset($_POST['itemLengthFromFilter']) ? $_POST['itemLengthFromFilter'] : '';
+$itemLengthToFilter = isset($_POST['itemLengthToFilter']) ? $_POST['itemLengthToFilter'] : '';
+$itemWidthFilter = isset($_POST['itemWidthFilter']) ? $_POST['itemWidthFilter'] : '>=';
+$itemWidthFromFilter = isset($_POST['itemWidthFromFilter']) ? $_POST['itemWidthFromFilter'] : '';
+$itemWidthToFilter = isset($_POST['itemWidthToFilter']) ? $_POST['itemWidthToFilter'] : '';
+$itemHeightFilter = isset($_POST['itemHeightFilter']) ? $_POST['itemHeightFilter'] : '>=';
+$itemHeightFromFilter = isset($_POST['itemHeightFromFilter']) ? $_POST['itemHeightFromFilter'] : '';
+$itemHeightToFilter = isset($_POST['itemHeightToFilter']) ? $_POST['itemHeightToFilter'] : '';
 
 $customerIdArray = $partNameArray = $partNumberArray = $materialSpecIdArray = $statusArray = $partIdArray = $partsCommentArray = [ ];
 $sql = $sqlData;
@@ -219,39 +228,39 @@ echo "<div class='row'>";
     echo "</div>";
 echo "</div>";
 echo "<div class='row w3-padding-top'>";
-    echo "<div class='col-md-2'>";
-        echo "<label>".displayText('L74', 'utf8', 0, 0, 1)."</label>";
-        echo "<div class='w3-right'>";
-            echo "<select form='formFilter' class='w3-pale-green' name='lengthOperator'>";
-                echo "<option value='='></option>";
-                echo "<option ".$selectedLengthA.">>=</option>";
-                echo "<option ".$selectedLengthB."><=</option>";
-            echo "</select>";
-        echo "</div>";
-        echo "<input form='formFilter' type='number' name='partl' class='w3-input w3-border' value='".$partl."'>";
-    echo "</div>";
-    echo "<div class='col-md-2'>";
-        echo "<label>".displayText('L75', 'utf8', 0, 0, 1)."</label>";
-        echo "<div class='w3-right'>";
-            echo "<select form='formFilter' class='w3-pale-green' name='widthOperator'>";
-                echo "<option value='='></option>";
-                echo "<option ".$selectedWidthA.">>=</option>";
-                echo "<option ".$selectedWidthB."><=</option>";
-            echo "</select>";
-        echo "</div>";
-        echo "<input form='formFilter' type='number' name='partw' class='w3-input w3-border' value='".$partw."'>";
-    echo "</div>";
-    echo "<div class='col-md-2'>";
-        echo "<label>".displayText('L76', 'utf8', 0, 0, 1)."</label>";
-        echo "<div class='w3-right'>";
-            echo "<select form='formFilter' class='w3-pale-green' name='heightOperator'>";
-                echo "<option value='='></option>";
-                echo "<option ".$selectedHeightA.">>=</option>";
-                echo "<option ".$selectedHeightB."><=</option>";
-            echo "</select>";
-        echo "</div>";
-        echo "<input form='formFilter' type='number' name='parth' class='w3-input w3-border' value='".$parth."'>";
-    echo "</div>";
+    // echo "<div class='col-md-2'>";
+    //     echo "<label>".displayText('L74', 'utf8', 0, 0, 1)."</label>";
+    //     echo "<div class='w3-right'>";
+    //         echo "<select form='formFilter' class='w3-pale-green' name='lengthOperator'>";
+    //             echo "<option value='='></option>";
+    //             echo "<option ".$selectedLengthA.">>=</option>";
+    //             echo "<option ".$selectedLengthB."><=</option>";
+    //         echo "</select>";
+    //     echo "</div>";
+    //     echo "<input form='formFilter' type='number' name='partl' class='w3-input w3-border' value='".$partl."'>";
+    // echo "</div>";
+    // echo "<div class='col-md-2'>";
+    //     echo "<label>".displayText('L75', 'utf8', 0, 0, 1)."</label>";
+    //     echo "<div class='w3-right'>";
+    //         echo "<select form='formFilter' class='w3-pale-green' name='widthOperator'>";
+    //             echo "<option value='='></option>";
+    //             echo "<option ".$selectedWidthA.">>=</option>";
+    //             echo "<option ".$selectedWidthB."><=</option>";
+    //         echo "</select>";
+    //     echo "</div>";
+    //     echo "<input form='formFilter' type='number' name='partw' class='w3-input w3-border' value='".$partw."'>";
+    // echo "</div>";
+    // echo "<div class='col-md-2'>";
+    //     echo "<label>".displayText('L76', 'utf8', 0, 0, 1)."</label>";
+    //     echo "<div class='w3-right'>";
+    //         echo "<select form='formFilter' class='w3-pale-green' name='heightOperator'>";
+    //             echo "<option value='='></option>";
+    //             echo "<option ".$selectedHeightA.">>=</option>";
+    //             echo "<option ".$selectedHeightB."><=</option>";
+    //         echo "</select>";
+    //     echo "</div>";
+    //     echo "<input form='formFilter' type='number' name='parth' class='w3-input w3-border' value='".$parth."'>";
+    // echo "</div>";
     echo "<div class='col-md-2'>";
         echo "<label>".displayText('L566', 'utf8', 0, 0, 1)."</label>";
         echo "<select form='formFilter' id='materialType' name='materialType[]'  multiple='multiple'>";
@@ -353,63 +362,123 @@ if($_SESSION['idNumber']==true)
         echo "<div class='col-md-12'>";
             echo "<ul class='list-inline'>";
                 echo "<li>";
-                    echo "<label class='w3-tiny'>".(displayText("L70", "utf8", 0, 0, 1))."</label>"; // Item X
-                    echo "<select class='w3-input w3-border' id='itemxFilter' name='itemxFilter' form='formFilter'>";
-                        $selectTotalA = ($itemxFilter == "RANGE") ? "selected" : "";
-                        $selectTotalB = ($itemxFilter == ">=") ? "selected" : "";
-                        $selectTotalC = ($itemxFilter == "<=") ? "selected" : "";
+                    echo "<label class='w3-tiny'>".(displayText("L74", "utf8", 0, 0, 1))."</label>"; // Length
+                    echo "<select class='w3-input w3-border' id='itemLengthFilter' name='itemLengthFilter' form='formFilter'>";
+                        $selectTotalA = ($itemLengthFilter == "RANGE") ? "selected" : "";
+                        $selectTotalB = ($itemLengthFilter == ">=") ? "selected" : "";
+                        $selectTotalC = ($itemLengthFilter == "<=") ? "selected" : "";
                         echo "<option ".$selectTotalA." value='RANGE'>".displayText("L558", "utf8", 0, 1, 1)."</option>";
                         echo "<option ".$selectTotalB." value='>='>>=</option>";
                         echo "<option ".$selectTotalC." value='<='><=</option>";
                     echo "</select>";
                 echo "</li>";
                 echo "<li>";
-                    echo "<input type='number' value='".$itemxFromFilter."' step='any' min=0 class='w3-input w3-border w3-pale-yellow' name='itemxFromFilter' form='formFilter'>";
+                    echo "<input type='number' value='".$itemLengthFromFilter."' step='any' min=0 class='w3-input w3-border w3-pale-yellow' name='itemLengthFromFilter' form='formFilter'>";
                 echo "</li>";
-                $showitemx = ($itemxFilter == "RANGE") ? "" : "display:none;";
-                echo "<li id='showitemx' style='".$showitemx."'>";
-                    echo "<input type='number' value='".$itemxToFilter."' step='any' min=0 class='w3-input w3-border w3-pale-yellow' name='itemxToFilter' form='formFilter'>";
+                $showitemLength = ($itemLengthFilter == "RANGE") ? "" : "display:none;";
+                echo "<li id='showitemLength' style='".$showitemLength."'>";
+                    echo "<input type='number' value='".$itemLengthToFilter."' step='any' min=0 class='w3-input w3-border w3-pale-yellow' name='itemLengthToFilter' form='formFilter'>";
                 echo "</li>";
                 echo "<li>";
-                    echo "<label class='w3-tiny'>".(displayText("L71", "utf8", 0, 0, 1))."</label>"; // Item Y
-                    echo "<select class='w3-input w3-border' id='itemyFilter' name='itemyFilter' form='formFilter'>";
-                        $selectTotalA = ($itemyFilter == "RANGE") ? "selected" : "";
-                        $selectTotalB = ($itemyFilter == ">=") ? "selected" : "";
-                        $selectTotalC = ($itemyFilter == "<=") ? "selected" : "";
+                    echo "<label class='w3-tiny'>".(displayText("L75", "utf8", 0, 0, 1))."</label>"; // Width
+                    echo "<select class='w3-input w3-border' id='itemWidthFilter' name='itemWidthFilter' form='formFilter'>";
+                        $selectTotalA = ($itemWidthFilter == "RANGE") ? "selected" : "";
+                        $selectTotalB = ($itemWidthFilter == ">=") ? "selected" : "";
+                        $selectTotalC = ($itemWidthFilter == "<=") ? "selected" : "";
                         echo "<option ".$selectTotalA." value='RANGE'>".displayText("L558", "utf8", 0, 1, 1)."</option>";
                         echo "<option ".$selectTotalB." value='>='>>=</option>";
                         echo "<option ".$selectTotalC." value='<='><=</option>";
                     echo "</select>";
                 echo "</li>";
                 echo "<li>";
-                    echo "<input type='number' value='".$itemyFromFilter."' step='any' min=0 class='w3-input w3-border w3-pale-yellow' name='itemyFromFilter' form='formFilter'>";
+                    echo "<input type='number' value='".$itemWidthFromFilter."' step='any' min=0 class='w3-input w3-border w3-pale-yellow' name='itemWidthFromFilter' form='formFilter'>";
                 echo "</li>";
-                $showitemy = ($itemyFilter == "RANGE") ? "" : "display:none;";
-                echo "<li id='showitemy' style='".$showitemy."'>";
-                    echo "<input type='number' value='".$itemyToFilter."' step='any' min=0 class='w3-input w3-border w3-pale-yellow' name='itemyToFilter' form='formFilter'>";
+                $showitemWidth = ($itemWidthFilter == "RANGE") ? "" : "display:none;";
+                echo "<li id='showitemWidth' style='".$showitemWidth."'>";
+                    echo "<input type='number' value='".$itemWidthToFilter."' step='any' min=0 class='w3-input w3-border w3-pale-yellow' name='itemWidthToFilter' form='formFilter'>";
                 echo "</li>";
                 echo "<li>";
-                    echo "<label class='w3-tiny'>".(displayText("L72", "utf8", 0, 0, 1))."</label>"; // Item Weight
-                    echo "<select class='w3-input w3-border' id='itemWeightFilter' name='itemWeightFilter' form='formFilter'>";
-                        $selectTotalA = ($itemWeightFilter == "RANGE") ? "selected" : "";
-                        $selectTotalB = ($itemWeightFilter == ">=") ? "selected" : "";
-                        $selectTotalC = ($itemWeightFilter == "<=") ? "selected" : "";
+                    echo "<label class='w3-tiny'>".(displayText("L76", "utf8", 0, 0, 1))."</label>"; // Height
+                    echo "<select class='w3-input w3-border' id='itemHeightFilter' name='itemHeightFilter' form='formFilter'>";
+                        $selectTotalA = ($itemHeightFilter == "RANGE") ? "selected" : "";
+                        $selectTotalB = ($itemHeightFilter == ">=") ? "selected" : "";
+                        $selectTotalC = ($itemHeightFilter == "<=") ? "selected" : "";
                         echo "<option ".$selectTotalA." value='RANGE'>".displayText("L558", "utf8", 0, 1, 1)."</option>";
                         echo "<option ".$selectTotalB." value='>='>>=</option>";
                         echo "<option ".$selectTotalC." value='<='><=</option>";
                     echo "</select>";
                 echo "</li>";
                 echo "<li>";
-                    echo "<input type='number' value='".$itemWeightFromFilter."' step='any' min=0 class='w3-input w3-border w3-pale-yellow' name='itemWeightFromFilter' form='formFilter'>";
+                    echo "<input type='number' value='".$itemHeightFromFilter."' step='any' min=0 class='w3-input w3-border w3-pale-yellow' name='itemHeightFromFilter' form='formFilter'>";
                 echo "</li>";
-                $showitemWeight = ($itemWeightFilter == "RANGE") ? "" : "display:none;";
-                echo "<li id='showitemWeight' style='".$showitemWeight."'>";
-                    echo "<input type='number' value='".$itemWeightToFilter."' step='any' min=0 class='w3-input w3-border w3-pale-yellow' name='itemWeightToFilter' form='formFilter'>";
+                $showitemHeight = ($itemHeightFilter == "RANGE") ? "" : "display:none;";
+                echo "<li id='showitemHeight' style='".$showitemHeight."'>";
+                    echo "<input type='number' value='".$itemHeightToFilter."' step='any' min=0 class='w3-input w3-border w3-pale-yellow' name='itemHeightToFilter' form='formFilter'>";
                 echo "</li>";
             echo "</ul>";                
         echo "</div>";
     echo "</div>";
 }
+echo "<div class='row w3-padding-top'>";
+    echo "<div class='col-md-12'>";
+        echo "<ul class='list-inline'>";
+            echo "<li>";
+                echo "<label class='w3-tiny'>".(displayText("L70", "utf8", 0, 0, 1))."</label>"; // Item X
+                echo "<select class='w3-input w3-border' id='itemxFilter' name='itemxFilter' form='formFilter'>";
+                    $selectTotalA = ($itemxFilter == "RANGE") ? "selected" : "";
+                    $selectTotalB = ($itemxFilter == ">=") ? "selected" : "";
+                    $selectTotalC = ($itemxFilter == "<=") ? "selected" : "";
+                    echo "<option ".$selectTotalA." value='RANGE'>".displayText("L558", "utf8", 0, 1, 1)."</option>";
+                    echo "<option ".$selectTotalB." value='>='>>=</option>";
+                    echo "<option ".$selectTotalC." value='<='><=</option>";
+                echo "</select>";
+            echo "</li>";
+            echo "<li>";
+                echo "<input type='number' value='".$itemxFromFilter."' step='any' min=0 class='w3-input w3-border w3-pale-yellow' name='itemxFromFilter' form='formFilter'>";
+            echo "</li>";
+            $showitemx = ($itemxFilter == "RANGE") ? "" : "display:none;";
+            echo "<li id='showitemx' style='".$showitemx."'>";
+                echo "<input type='number' value='".$itemxToFilter."' step='any' min=0 class='w3-input w3-border w3-pale-yellow' name='itemxToFilter' form='formFilter'>";
+            echo "</li>";
+            echo "<li>";
+                echo "<label class='w3-tiny'>".(displayText("L71", "utf8", 0, 0, 1))."</label>"; // Item Y
+                echo "<select class='w3-input w3-border' id='itemyFilter' name='itemyFilter' form='formFilter'>";
+                    $selectTotalA = ($itemyFilter == "RANGE") ? "selected" : "";
+                    $selectTotalB = ($itemyFilter == ">=") ? "selected" : "";
+                    $selectTotalC = ($itemyFilter == "<=") ? "selected" : "";
+                    echo "<option ".$selectTotalA." value='RANGE'>".displayText("L558", "utf8", 0, 1, 1)."</option>";
+                    echo "<option ".$selectTotalB." value='>='>>=</option>";
+                    echo "<option ".$selectTotalC." value='<='><=</option>";
+                echo "</select>";
+            echo "</li>";
+            echo "<li>";
+                echo "<input type='number' value='".$itemyFromFilter."' step='any' min=0 class='w3-input w3-border w3-pale-yellow' name='itemyFromFilter' form='formFilter'>";
+            echo "</li>";
+            $showitemy = ($itemyFilter == "RANGE") ? "" : "display:none;";
+            echo "<li id='showitemy' style='".$showitemy."'>";
+                echo "<input type='number' value='".$itemyToFilter."' step='any' min=0 class='w3-input w3-border w3-pale-yellow' name='itemyToFilter' form='formFilter'>";
+            echo "</li>";
+            echo "<li>";
+                echo "<label class='w3-tiny'>".(displayText("L72", "utf8", 0, 0, 1))."</label>"; // Item Weight
+                echo "<select class='w3-input w3-border' id='itemWeightFilter' name='itemWeightFilter' form='formFilter'>";
+                    $selectTotalA = ($itemWeightFilter == "RANGE") ? "selected" : "";
+                    $selectTotalB = ($itemWeightFilter == ">=") ? "selected" : "";
+                    $selectTotalC = ($itemWeightFilter == "<=") ? "selected" : "";
+                    echo "<option ".$selectTotalA." value='RANGE'>".displayText("L558", "utf8", 0, 1, 1)."</option>";
+                    echo "<option ".$selectTotalB." value='>='>>=</option>";
+                    echo "<option ".$selectTotalC." value='<='><=</option>";
+                echo "</select>";
+            echo "</li>";
+            echo "<li>";
+                echo "<input type='number' value='".$itemWeightFromFilter."' step='any' min=0 class='w3-input w3-border w3-pale-yellow' name='itemWeightFromFilter' form='formFilter'>";
+            echo "</li>";
+            $showitemWeight = ($itemWeightFilter == "RANGE") ? "" : "display:none;";
+            echo "<li id='showitemWeight' style='".$showitemWeight."'>";
+                echo "<input type='number' value='".$itemWeightToFilter."' step='any' min=0 class='w3-input w3-border w3-pale-yellow' name='itemWeightToFilter' form='formFilter'>";
+            echo "</li>";
+        echo "</ul>";                
+    echo "</div>";
+echo "</div>";
 echo "<div class='row w3-padding-top'>";
     echo "<div class='col-md-12 w3-center'>";
         echo "<input type='hidden' name='lastValue' value='".$lastValue."' form='formFilter'>";
@@ -489,6 +558,42 @@ $(document).ready(function(){
         else
         {
             $("#showitemWeight").show();
+        }
+    });    
+    $("#itemLengthFilter").change(function(){
+        var val = $(this).val();
+
+        if(val != "RANGE")
+        {
+            $("#showitemLength").hide();
+        }
+        else
+        {
+            $("#showitemLength").show();
+        }
+    });    
+    $("#itemWidthFilter").change(function(){
+        var val = $(this).val();
+
+        if(val != "RANGE")
+        {
+            $("#showitemWidth").hide();
+        }
+        else
+        {
+            $("#showitemWidth").show();
+        }
+    });    
+    $("#itemHeightFilter").change(function(){
+        var val = $(this).val();
+
+        if(val != "RANGE")
+        {
+            $("#showitemHeight").hide();
+        }
+        else
+        {
+            $("#showitemHeight").show();
         }
     });    
 
