@@ -280,7 +280,7 @@ if($processGroup != '')
 $sqlFilter = "";
 $sqlFilterArray = $sqlFilterMaterialSpecsArray = array();
 
-if($customerId!='')				$sqlFilterArray[] = "customerId = ".$customerId." ";
+if($customerId!='')				$sqlFilterArray[] = "customerId IN(".implode(",",$customerId).") ";
 if($partName!='')				$sqlFilterArray[] = "partName LIKE '".$partName."%' ";
 if($partNumber!='')				$sqlFilterArray[] = "partNumber LIKE '%".$partNumber."%' ";
 if($partsComment!='')			$sqlFilterArray[] = "partsComment LIKE '%".$partsComment."%' ";
@@ -665,7 +665,7 @@ createHeader($displayId, $version, $prevousLink);
 			{
 				foreach ($_POST as $key => $value) 
 				{
-					if(!in_array($key, ['showOpenPO', 'lastValue', 'dataValue', 'order', 'materialType', 'statusPart', 'partTypeFlag', 'process']))
+					if(!in_array($key, ['showOpenPO', 'lastValue', 'dataValue', 'order', 'materialType', 'statusPart', 'partTypeFlag', 'process', 'customerId']))
 					{
 						if(!is_array($value) AND trim($value) != "")
 						{

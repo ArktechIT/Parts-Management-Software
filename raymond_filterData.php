@@ -151,7 +151,7 @@ $searchBtn = $tpl->createButton();
 echo "<div class='row'>";
     echo "<div class='col-md-2'>";
         echo "<label>".displayText('L24', 'utf8', 0, 0, 1)."</label>";
-        echo "<select form='formFilter' type='combobox' class='w3-input w3-border' name='customerId'>";
+        echo "<select form='formFilter' id='customerId' class='w3-input w3-border' name='customerId[]' multiple='multiple'>";
             echo "<option></option>";
             $customerIdArray = array_unique($customerIdArray);
             $sql = "SELECT customerId, customerName FROM sales_customer WHERE customerId IN (".implode(", ",$customerIdArray).") ORDER BY customerName";
@@ -161,7 +161,7 @@ echo "<div class='row'>";
                 $customerIdVal = $key['customerId'];
                 $customerNameVal = $key['customerName'];
 
-                $selected = ($customerIdVal == $customerId) ? "selected" : "";
+                $selected = (in_array($customerIdVal,$customerId)) ? "selected" : "";
                 echo "<option ".$selected." value='".$customerIdVal."'>".$customerNameVal."</option>";
             }
         echo "</select>";
@@ -507,7 +507,7 @@ echo "</div>";
 </style>
 <script>
 $(document).ready(function(){
-    $('#statusPart, #partTypeFlag, #materialType, #process').multiselect({
+    $('#statusPart, #partTypeFlag, #materialType, #process, #customerId').multiselect({
         maxHeight               : 300,
         includeSelectAllOption  : true,
         buttonClass             :'w3-input w3-border w3-pale-yellow',
