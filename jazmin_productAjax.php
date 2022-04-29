@@ -363,8 +363,8 @@
 				}
 				$nestedData[] = $partsQueryResult['firstPODate'];
 				$nestedData[] = $partsQueryResult['lastPODate'];
-				$nestedData[] = $partsQueryResult['orderCount'];
-				$nestedData[] = $partsQueryResult['totalQuantity'];
+				$nestedData[] = (array_key_exists('poCount',$partsQueryResult)) ? $partsQueryResult['poCount'] : $partsQueryResult['orderCount'];
+				$nestedData[] = (array_key_exists('poQuantity',$partsQueryResult)) ? $partsQueryResult['poQuantity'] : $partsQueryResult['totalQuantity'];
 				$nestedData[] = $editProduct;
 				// $nestedData[] = $partsDataLink;
 				$nestedData[] = $drawing.$sheetWorksButton;

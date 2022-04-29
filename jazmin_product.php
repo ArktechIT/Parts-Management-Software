@@ -296,6 +296,55 @@ if($partTypeFlag!='')			$sqlFilterArray[] = "partTypeFlag IN (".implode(", ",$pa
 if($materialType!='')			$sqlFilterMaterialSpecsArray[] = "materialTypeId IN(SELECT materialTypeId FROM engineering_materialtype WHERE materialType IN ('".implode("', '",$materialType)."'))";
 if($metalThickness!='')			$sqlFilterMaterialSpecsArray[] = "metalThickness LIKE '".$metalThickness."'";	
 
+$additionalField = '';
+$poQuantityField = 'totalQuantity';
+$poCountField = 'orderCount';
+if(in_array($_SESSION['idNumber'],['0346','0280']))
+{
+	if($lastPODate!='')
+	{
+		$additionalField = "
+			IFNULL((
+				SELECT
+					SUM(ppic_lotlist.workingQuantity)
+				FROM
+					ppic_lotlist
+					INNER JOIN
+						sales_polist
+					ON
+						sales_polist.poId = ppic_lotlist.poId
+				WHERE
+					ppic_lotlist.partId = cadcam_parts.partId AND
+					ppic_lotlist.identifier = 1 AND
+					sales_polist.poDate BETWEEN '".str_replace(" to ","' AND '",$lastPODate)."'
+				GROUP BY
+					ppic_lotlist.partId
+			),0) poQuantity
+		";
+		$additionalField .= ",
+			IFNULL((
+				SELECT
+					COUNT(ppic_lotlist.partId)
+				FROM
+					ppic_lotlist
+					INNER JOIN
+						sales_polist
+					ON
+						sales_polist.poId = ppic_lotlist.poId
+				WHERE
+					ppic_lotlist.partId = cadcam_parts.partId AND
+					ppic_lotlist.identifier = 1 AND
+					sales_polist.poDate BETWEEN '".str_replace(" to ","' AND '",$lastPODate)."'
+				GROUP BY
+					ppic_lotlist.partId
+			),0) poCount
+		";
+		$poQuantityField = 'poQuantity';
+		$poCountField = 'poCount';
+		$additionalField = trim(preg_replace('/\s+/', ' ', $additionalField));
+	}
+}
+
 if(count($sqlFilterMaterialSpecsArray) > 0)	$sqlFilterArray[] = "materialSpecId IN(SELECT materialSpecId FROM cadcam_materialspecs WHERE ".implode(" AND ",$sqlFilterMaterialSpecsArray).")";
 if($sheetWorksFlag!='')
 {
@@ -496,7 +545,7 @@ else
 
 	if($dataValue == 'poCount')
 	{
-		$sqlFilter .= " ORDER BY orderCount ".$order;
+		$sqlFilter .= " ORDER BY ".$poCountField." ".$order;
 		$colorCountPO = 'w3-pink';
 	
 		$sortCountPOClass = "<i class='fa fa-sort-amount-desc'></i>&emsp;";
@@ -505,7 +554,7 @@ else
 
 	if($dataValue == 'poQuantity')
 	{
-		$sqlFilter .= " ORDER BY totalQuantity ".$order;
+		$sqlFilter .= " ORDER BY ".$poQuantityField." ".$order;
 		$colorQuantityPO = 'w3-pink';
 	
 		$sortQuantityPOClass = "<i class='fa fa-sort-amount-desc'></i>&emsp;";
@@ -568,7 +617,9 @@ else
 
 }
 
-$sql = "SELECT * FROM cadcam_parts ".$sqlFilter; //if($_SESSION['idNumber'] == "0346") echo $sql;
+$fields = ($additionalField!='') ? '*,'.$additionalField : '*';
+
+$sql = "SELECT $fields FROM cadcam_parts ".$sqlFilter; //if($_SESSION['idNumber'] == "0346") echo $sql;
 $sqlData = $sql;
 //$sqlFilter = trim(preg_replace('/\s+/', ' ', $sqlFilter));
 $query = $db->query($sql);
