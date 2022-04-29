@@ -183,7 +183,14 @@
 			if($url!='')
 			{
 				$url = "window.open('/".v."/20 Document Management System/raymond_drawingViewer.php?partId=".$partsQueryResult['partId']."&dwg=2','cc','left=50,screenX=700,screenY=20,resizable,scrollbars,status,width=1000,height=700')";
-				$drawing = "<img onclick=\" ".$url." \" src='../Common Data/Templates/images/drawingIcon.png' width='20' height='20' alt='VIEW' title='Drawing' >";
+				// if($_SESSION['idNumber']=='0276')
+				// {
+					$drawing = "<i style='cursor:pointer;' class='fa fa-photo w3-medium w3-text-purple drawingViewerClass' data-lot-number='".$lotNumber."' data-lot-partid='".$partsQueryResult['partId']."' data-counter='".$counter."' title='Drawing'></i>";
+				// }
+				// else
+				// {
+					// $drawing = "<img onclick=\" ".$url." \" src='../Common Data/Templates/images/drawingIcon.png' width='20' height='20' alt='VIEW' title='Drawing' >";
+				// }
 			}
 			
 			//rosemie

@@ -882,6 +882,20 @@ PMSTemplates::includeFooter();
             }
 		});
 	}
+	
+	$(document).ready(function() 
+	{
+		$(document).on('click','.drawingViewerClass',function(e){
+			const lotNumber = $(this).data('lotNumber');
+			const lotPartid = $(this).data('lotPartid');
+			const drawingViewerClass = document.querySelectorAll('.drawingViewerClass');
+			drawingViewerClass.forEach(drawing => {
+				drawing.dataset.clicked='no'
+			})
+			e.target.dataset.clicked='yes';
+			window.open(`/<?php echo v;?>/20 Document Management System/raymond_drawingViewer.php?lotNumber=${lotNumber}&partId=${lotPartid}&dwg=2`,'cc','left=50,screenX=700,screenY=20,resizable,scrollbars,status,width=1000,height=700')
+		});
+	});
 </script>
 <script>
 	$(function(){
@@ -922,13 +936,23 @@ PMSTemplates::includeFooter();
                     console.log(data);
                 }
             },
+			
 			"createdRow": function( row, data, index ) {
 				var partId = data[0];
+				//ROSEMIE
+				$(row).addClass("w3-hover-dark-grey rowClass");
+                $(row).attr('id', partId);
+                $(row).click(function(){
+                    $(".rowClass").removeClass("w3-deep-orange");
+                    $(this).addClass("w3-deep-orange");
+                });
+				//ROSEMIE
 				$('td:eq(20)', row).dblclick(function(){
 					$(this).attr("contenteditable", true);
 					$(this).addClass("w3-pale-yellow");
 					$(this).focus();
 				});
+				
 
 				$('td:eq(20)', row).blur(function(){
 					var comments = $(this).text();
