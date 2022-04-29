@@ -467,7 +467,7 @@ else
 
 $totalRecords = 0;
 
-$colorFirstPO = $colorLastPO = $colorCountPO = $colorQuantityPO = $colorItemX = $colorItemY = $colorItemHeight = $colorItemWidth = $colorItemLength = 'w3-green';
+$colorFirstPO = $colorLastPO = $colorCountPO = $colorQuantityPO = $colorItemX = $colorItemY = $colorItemWeight = $colorItemHeight = $colorItemWidth = $colorItemLength = 'w3-green';
 $sortFirstPOClass = $sortLastPOClass = $sortCountPOClass = $sortQuantityPOClass = "";
 if($dataValue == "")
 {
@@ -555,6 +555,15 @@ else
 	
 		$sortItemLengthClass = "<i class='fa fa-sort-amount-desc'></i>&emsp;";
 		if($order == 'ASC') $sortItemLengthClass = "<i class='fa fa-sort-amount-asc'></i>&emsp;";
+	}
+
+	if($dataValue == 'itemWeight')
+	{
+		$sqlFilter .= " ORDER BY itemWeight ".$order;
+		$colorItemWeight = 'w3-pink';
+	
+		$sortItemWeightClass = "<i class='fa fa-sort-amount-desc'></i>&emsp;";
+		if($order == 'ASC') $sortItemWeightClass = "<i class='fa fa-sort-amount-asc'></i>&emsp;";
 	}
 
 }
@@ -790,7 +799,8 @@ createHeader($displayId, $version, $prevousLink);
 					<th class='w3-center <?php echo $colorItemHeight; ?> itemHeightClass '  data-id='itemHeight' style='cursor:pointer; vertical-align:middle;'><?php echo $sortItemHeightClass; ?><?php echo displayText('L76');?></th>
 					<th class='w3-center <?php echo $colorItemWidth; ?> itemWidthClass '  data-id='itemWidth' style='cursor:pointer; vertical-align:middle;'><?php echo $sortItemWidthClass; ?><?php echo displayText('L75');?></th>
 					<th class='w3-center <?php echo $colorItemLength; ?> itemLengthClass '  data-id='itemLength' style='cursor:pointer; vertical-align:middle;'><?php echo $sortItemLengthClass; ?><?php echo displayText('L74');?></th>
-					<th class='w3-center' style='vertical-align:middle;'><?php echo displayText('L72');?></th>
+					<!-- <th class='w3-center' style='vertical-align:middle;'><?php echo displayText('L72');?></th> -->
+					<th class='w3-center <?php echo $colorItemWeight; ?> itemWeightClass '  data-id='itemWeight' style='cursor:pointer; vertical-align:middle;'><?php echo $sortItemWeightClass; ?><?php echo displayText('L72');?></th>
 					<?php
 					if($showPrice == 1)
 					{
@@ -1013,7 +1023,7 @@ PMSTemplates::includeFooter();
 			$("#formFilter").submit();
 		}); */
 
-        $('.firstPOdateClass, .lastPOdateClass, .poCountClass, .poQuantityClass, .itemXClass, .itemYClass, .itemHeightClass, .itemWidthClass, .itemLengthClass').click(function(){
+        $('.firstPOdateClass, .lastPOdateClass, .poCountClass, .poQuantityClass, .itemXClass, .itemYClass, .itemWeightClass, .itemHeightClass, .itemWidthClass, .itemLengthClass').click(function(){
 			var id = $(this).attr("data-id");
 			var valueText = $("#dataValue").val();
 			var order = "<?php echo $order; ?>";
