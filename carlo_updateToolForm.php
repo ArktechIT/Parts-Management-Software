@@ -1,6 +1,8 @@
 <?php
 include("../Common Data/PHP Modules/mysqliConnection.php");
 
+$identifier = $_GET['identifier'];
+
 ?>
 <html>
 <head>
@@ -8,7 +10,7 @@ include("../Common Data/PHP Modules/mysqliConnection.php");
 </head>
 <body>
 <?php
-	echo "<form action = 'carlo_updateToolFormSQL.php?partId=".$_GET['partId']."&processCode=".$_GET['processCode']."&toolId=".$_POST['toolId']."&listId=".$_POST['listId']."' method = 'POST'>";
+	echo "<form action = 'carlo_updateToolFormSQL.php?partId=".$_GET['partId']."&processCode=".$_GET['processCode']."&toolId=".$_POST['toolId']."&listId=".$_POST['listId']."&identifier=".$_GET['identifier']."' method = 'POST'>";
 ?>
 	<center>
 		<label>Update Tool Form</label><br>

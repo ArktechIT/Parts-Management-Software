@@ -1780,13 +1780,16 @@ if($partsQueryResult['PVC'] == 1)
                             echo "<th style='vertical-align:middle;' class='w3-center'>".displayText('L61')."</th>";
                             echo "<th style='vertical-align:middle;' class='w3-center'>".displayText('L35')."</th>";
                             echo "<th style='vertical-align:middle;' class='w3-center'>".displayText('L94')."</th>";
+                            echo "<th style='vertical-align:middle;' class='w3-center'>NEW TOOL</th>";//TAMANG
+                            echo "<th style='vertical-align:middle;' class='w3-center'>MACHINE</th>";//TAMANG
+                            echo "<th style='vertical-align:middle;' class='w3-center'>JIG</th>";//TAMANG
                             echo "<th style='vertical-align:middle;' class='w3-center'>1</th>";
                             echo "<th style='vertical-align:middle;' class='w3-center'>2</th>";
                             echo "<th style='vertical-align:middle;' class='w3-center'>3</th>";
                             echo "<th style='vertical-align:middle;' class='w3-center'>4</th>";
                             echo "<th style='vertical-align:middle;' class='w3-center'>5</th>";
-                            echo "<th style='vertical-align:middle;' class='w3-center'>6</th>";
-                            echo "<th style='vertical-align:middle;' class='w3-center'>7</th>";
+                            // echo "<th style='vertical-align:middle;' class='w3-center'>6</th>";
+                            // echo "<th style='vertical-align:middle;' class='w3-center'>7</th>";
                             echo "<th style='vertical-align:middle;' class='w3-center'>".displayText('L1368')."</th>";//L1368 Standard
                             echo "<th style='vertical-align:middle;' class='w3-center'>";
                                 echo "<a onclick=\"openTinyBox('','600','anthony_addProcessDetailForm.php?partId=".$_GET['partId']."&insert=1&patternId=".$_GET['patternId']."')\"><img src = '../Common Data/Templates/images/edit1.png' width = '20' height = '20'></a>";
@@ -2054,7 +2057,7 @@ if($partsQueryResult['PVC'] == 1)
                                             }
                                         echo "</td>";
 
-                                        //TAMANG
+                                        
                                         // NEW TOOL END HERE 
                                         // MACHINE STARTS HERE------------------------------------------------TAMANG 2022-03-23 START HERE---------------------------------------------------------------------------------
                                         echo "<td class = 'tresult'>";
@@ -2227,30 +2230,30 @@ if($partsQueryResult['PVC'] == 1)
                                                 echo "</tbody>";
                                             echo "</table>";
                                         echo "</td>";
-                                        echo "<td class = 'w3-center'>";
-                                            echo "<table class='table table-bordered table-condensed'>";
-                                                echo "<thead class='w3-light-blue'>";
-                                                    echo "<th class='w3-center'>".dataParameter($getPartProcessResult['processCode'], 6)."</th>";
-                                                echo "</thead>";
-                                                echo "<tbody>";
-                                                    echo "<tr>";
-                                                        echo "<td class='w3-center'>".$dataSix."</td>";
-                                                    echo "</tr>";
-                                                echo "</tbody>";
-                                            echo "</table>";
-                                        echo "</td>";
-                                        echo "<td class = 'w3-center'>";
-                                            echo "<table class='table table-bordered table-condensed'>";
-                                                echo "<thead class='w3-light-blue'>";
-                                                    echo "<th class='w3-center'>".dataParameter($getPartProcessResult['processCode'], 7)."</th>";
-                                                echo "</thead>";
-                                                echo "<tbody>";
-                                                    echo "<tr>";
-                                                        echo "<td class='w3-center'>".$dataSeven."</td>";
-                                                    echo "</tr>";
-                                                echo "</tbody>";
-                                            echo "</table>";
-                                        echo "</td>";
+                                        // echo "<td class = 'w3-center'>";
+                                        //     echo "<table class='table table-bordered table-condensed'>";
+                                        //         echo "<thead class='w3-light-blue'>";
+                                        //             echo "<th class='w3-center'>".dataParameter($getPartProcessResult['processCode'], 6)."</th>";
+                                        //         echo "</thead>";
+                                        //         echo "<tbody>";
+                                        //             echo "<tr>";
+                                        //                 echo "<td class='w3-center'>".$dataSix."</td>";
+                                        //             echo "</tr>";
+                                        //         echo "</tbody>";
+                                        //     echo "</table>";
+                                        // echo "</td>";
+                                        // echo "<td class = 'w3-center'>";
+                                        //     echo "<table class='table table-bordered table-condensed'>";
+                                        //         echo "<thead class='w3-light-blue'>";
+                                        //             echo "<th class='w3-center'>".dataParameter($getPartProcessResult['processCode'], 7)."</th>";
+                                        //         echo "</thead>";
+                                        //         echo "<tbody>";
+                                        //             echo "<tr>";
+                                        //                 echo "<td class='w3-center'>".$dataSeven."</td>";
+                                        //             echo "</tr>";
+                                        //         echo "</tbody>";
+                                        //     echo "</table>";
+                                        // echo "</td>";
                                         echo "<td class = 'tresult'>";
                                             $specIdCounter = 0;
                                             $sql = "SELECT specificationId FROM engineering_partprocessstandard WHERE partId = ".$_GET['partId']." AND processCode=".$getPartProcessResult['processCode']."";
