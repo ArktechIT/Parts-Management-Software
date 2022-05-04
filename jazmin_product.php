@@ -719,51 +719,37 @@ createHeader($displayId, $version, $prevousLink);
 				<?php
 				if($_SESSION['idNumber']==true)
 				{
-					$excludeFilterArray = [
-						'dataValue',
-						'order',
-						'lengthOperator',
-						'widthOperator',
-						'heightOperator',
-						'itemxFilter',
-						'itemxToFilter',
-						'itemyFilter',
-						'itemyToFilter',
-						'itemWeightFilter',
-						'itemLengthFilter',
-						'itemLengthToFilter',
-						'itemWidthFilter',
-						'itemWidthToFilter',
-						'itemHeightFilter',
-						'itemHeightToFilter',
-						'lastValue'
-					];	
 					$currFilter = new PartsMasterCurrentFilter($_POST);
-					$currFilter->exludeData($excludeFilterArray);
-					$currFilter->changeKeyName('customerId',displayText('L24', 'utf8', 0, 0, 1));
-					$currFilter->changeKeyName('partName',displayText('L30', 'utf8', 0, 0, 1));
-					$currFilter->changeKeyName('partNumber',displayText('L28', 'utf8', 0, 0, 1));
-					$currFilter->changeKeyName('partTypeFlag',displayText('L111', 'utf8', 0, 0, 1));
-					$currFilter->changeKeyName('partl',displayText('L74', 'utf8', 0, 0, 1));
-					$currFilter->changeKeyName('partw',displayText('L75', 'utf8', 0, 0, 1));
-					$currFilter->changeKeyName('parth',displayText('L76', 'utf8', 0, 0, 1));
-					$currFilter->changeKeyName('materialType',displayText('L566', 'utf8', 0, 0, 1));
-					$currFilter->changeKeyName('metalThickness',displayText('L184', 'utf8', 0, 0, 1));
-					$currFilter->changeKeyName('statusPart',displayText('L172', 'utf8', 0, 0, 1));
-					$currFilter->changeKeyName('firstPODate',displayText('L4162', 'utf8', 0, 0, 1));
-					$currFilter->changeKeyName('lastPODate',displayText('L4163', 'utf8', 0, 0, 1));
-					$currFilter->changeKeyName('process',displayText('L59', 'utf8', 0, 0, 1));
-					$currFilter->changeKeyName('processGroup',displayText('L61', 'utf8', 0, 0, 1));
-					$currFilter->changeKeyName('partsComment',displayText('L636', 'utf8', 0, 0, 1));
-					$currFilter->changeKeyName('itemxFromFilter',displayText('L70', 'utf8', 0, 0, 1));
-					$currFilter->changeKeyName('itemyFromFilter',displayText('L71', 'utf8', 0, 0, 1));
-					$currFilter->changeKeyName('itemWeightFromFilter',displayText('L72', 'utf8', 0, 0, 1));
-					$currFilter->changeKeyName('itemLengthFromFilter',displayText('L74', 'utf8', 0, 0, 1));
-					$currFilter->changeKeyName('itemWidthFromFilter',displayText('L75', 'utf8', 0, 0, 1));
-					$currFilter->changeKeyName('itemHeightFromFilter',displayText('L76', 'utf8', 0, 0, 1));
-					$currFilter->changeKeyName('showOpenPO',displayText('L4569', 'utf8', 0, 0, 1));
+					$changeKeyNameArray = [
+						'customerId' => 'L24',
+						'partName' => 'L30',
+						'partNumber' => 'L28',
+						'partTypeFlag' => 'L111',
+						'partl' => 'L74',
+						'partw' => 'L75',
+						'parth' => 'L76',
+						'materialType' => 'L566',
+						'metalThickness' => 'L184',
+						'statusPart' => 'L172',
+						'firstPODate' => 'L4162',
+						'lastPODate' => 'L4163',
+						'process' => 'L59',
+						'processGroup' => 'L61',
+						'partsComment' => 'L636',
+						'itemxFromFilter' => 'L70',
+						'itemyFromFilter' => 'L71',
+						'itemWeightFromFilter' => 'L72',
+						'itemLengthFromFilter' => 'L74',
+						'itemWidthFromFilter' => 'L75',
+						'itemHeightFromFilter' => 'L76',
+						'showOpenPO' => 'L4569',
+					];
+					foreach($changeKeyNameArray as $key=>$displayId)
+					{
+						$currFilter->changeKeyName($key,displayText($displayId, 'utf8', 0, 0, 1));
+					}
 
-					$currFilter->displayData();
+					$currFilter->changedKeyOnly()->displayData();
 				}				
 				?>		
 			</div>
