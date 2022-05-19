@@ -2084,7 +2084,7 @@ if($partsQueryResult['PVC'] == 1)
                                                 }
                                             echo "</ul>";
                                             ?>
-                                                <a onclick="openTinyBox('250','580','carlo_addToolFormCopy.php?partId=<?php echo $_GET['partId'];?>&processCode=<?php echo $getPartProcessResult['processCode']; ?>&identifier=2')"><img src = '../Common Data/Templates/images/add1.png' width = '20' height = '20' align='right'></a>
+                                                <a onclick="openTinyBox('400','580','carlo_addToolFormCopy.php?partId=<?php echo $_GET['partId'];?>&processCode=<?php echo $getPartProcessResult['processCode']; ?>&identifier=2')"><img src = '../Common Data/Templates/images/add1.png' width = '20' height = '20' align='right'></a>
                                                 <!-- <button type="button" name="machineBtn" id="machineBtn" onclick="machine()"><i class="fa fa-gear"></i></button> -->
                                             <?php		
                                             if($totalMachine > 0)
