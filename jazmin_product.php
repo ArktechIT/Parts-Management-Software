@@ -22,13 +22,14 @@ Class PartsMasterCurrentFilter extends DisplayCurrentFilter
 	{
 		if($key=='customerId')
 		{
-			$sql = "SELECT customerAlias FROM sales_customer WHERE customerId IN(".implode(",",$value).") LIMIT 1";
-			$queryCustomer = $this->db->query($sql);
-			if($queryCustomer AND $queryCustomer->num_rows > 0)
-			{
-				$resultCustomer = $queryCustomer->fetch_assoc();
-				return $resultCustomer['customerAlias'];
-			}
+			$sql = "SELECT customerAlias FROM sales_customer WHERE customerId IN(".implode(",",$value).")";
+			$result = TableDB::fetchAll($sql);
+
+			$customerArray = array_map(function($val) {
+				return $val->customerAlias;
+			},$result);
+
+			return implode(",",$customerArray);
 		}
 
 		if($key=='statusPart')
@@ -295,7 +296,7 @@ if(count($sqlFilterMaterialSpecsArray) > 0)	$sqlFilterArray[] = "materialSpecId 
 if($sheetWorksFlag!='')
 {
 	$partIdArray = '';
-	$sql = "SELECT partId FROM engineering_sheetworksdata WHERE identifier = 1 AND partId > 0";
+	$sql = "SELECT partId FROM engineering_sheetworksdatanew WHERE identifier = 1 AND partId > 0";
 	$querySheetWorksData = $db->query($sql);
 	if($querySheetWorksData AND $querySheetWorksData->num_rows > 0)
 	{
@@ -978,6 +979,7 @@ PMSTemplates::includeFooter();
             ],
             fixedColumns: true,
             deferRender: true,
+			// "deferLoading": 57,
             scrollY    	: 505,
             scrollX		: cond,
             scroller    : {
