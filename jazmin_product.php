@@ -647,8 +647,19 @@ createHeader($displayId, $version, $prevousLink);
 <input type="hidden" name='myPartsComment[]' id ='myPartsComment' form="myPartsForm">    
 <div class="container-fluid">
 	<div class="row w3-padding-top">
-		<div class="col-md-12">
+		<div class="col-md-8">
+			<div class='w3-right'>
+				<h3>
+					<?php
+						if($process!='') echo "(".displayText('L59', 'utf8', 0, 0, 1)." : ".implode(",",$process).") : ".$totalRecords;
+					?>
+				</h3>
+			</div>
+		</div>
+		<div class="col-md-4">
+			<!--
 			<a target = '_blank' href="https://210.172.85.77/dwginf30/dwg/index.asp?uid=3DUP009&uadrs=3Dnagano@arktech.co.jp%22%3E" ><button class='w3-btn w3-tiny w3-round w3-green' style='width:200px'><i class='fa fa-hand-pointer-o'></i>&emsp;<b>CLICK me first (KCO Webware)</b></button></a>
+			-->
 			<!-- &emsp;<label>SORT BY:</label> -->
 			<!-- <button id='type' class='w3-btn w3-tiny w3-round w3-indigo'><b>TYPE</b></button> -->
 			<!-- <button id='thicnkess' class='w3-btn w3-tiny w3-round w3-indigo'><b>THICKNESS</b></button> -->
@@ -716,49 +727,45 @@ createHeader($displayId, $version, $prevousLink);
 	</div>
 	<div class="row w3-padding-top">
 		<div class='col-md-12'>
+			<label><?php echo displayText('L41'); ?> : <span><?php echo $totalRecords; ?></span></label>
 			<div class='w3-right'>
 				<?php
-				if($_SESSION['idNumber']==true)
-				{
-					$currFilter = new PartsMasterCurrentFilter($_POST);
-					$changeKeyNameArray = [
-						'customerId' => 'L24',
-						'partName' => 'L30',
-						'partNumber' => 'L28',
-						'partTypeFlag' => 'L111',
-						'partl' => 'L74',
-						'partw' => 'L75',
-						'parth' => 'L76',
-						'materialType' => 'L566',
-						'metalThickness' => 'L184',
-						'statusPart' => 'L172',
-						'firstPODate' => 'L4162',
-						'lastPODate' => 'L4163',
-						'process' => 'L59',
-						'processGroup' => 'L61',
-						'partsComment' => 'L636',
-						'itemxFromFilter' => 'L70',
-						'itemyFromFilter' => 'L71',
-						'itemWeightFromFilter' => 'L72',
-						'itemLengthFromFilter' => 'L74',
-						'itemWidthFromFilter' => 'L75',
-						'itemHeightFromFilter' => 'L76',
-						'showOpenPO' => 'L4569',
-					];
-					foreach($changeKeyNameArray as $key=>$displayId)
+					if($_SESSION['idNumber']==true)
 					{
-						$currFilter->changeKeyName($key,displayText($displayId, 'utf8', 0, 0, 1));
-					}
+						$currFilter = new PartsMasterCurrentFilter($_POST);
+						$changeKeyNameArray = [
+							'customerId' => 'L24',
+							'partName' => 'L30',
+							'partNumber' => 'L28',
+							'partTypeFlag' => 'L111',
+							'partl' => 'L74',
+							'partw' => 'L75',
+							'parth' => 'L76',
+							'materialType' => 'L566',
+							'metalThickness' => 'L184',
+							'statusPart' => 'L172',
+							'firstPODate' => 'L4162',
+							'lastPODate' => 'L4163',
+							// 'process' => 'L59',
+							'processGroup' => 'L61',
+							'partsComment' => 'L636',
+							'itemxFromFilter' => 'L70',
+							'itemyFromFilter' => 'L71',
+							'itemWeightFromFilter' => 'L72',
+							'itemLengthFromFilter' => 'L74',
+							'itemWidthFromFilter' => 'L75',
+							'itemHeightFromFilter' => 'L76',
+							'showOpenPO' => 'L4569',
+						];
+						foreach($changeKeyNameArray as $key=>$displayId)
+						{
+							$currFilter->changeKeyName($key,displayText($displayId, 'utf8', 0, 0, 1));
+						}
 
-					$currFilter->changedKeyOnly()->displayData();
-				}				
-				?>		
-			</div>
-		</div>
-	</div>
-	<div class="row w3-padding-top">
-		<div class='col-md-12'>
-			<label><?php echo displayText('L41'); ?> : <span><?php echo $totalRecords; ?></span></label>
+						$currFilter->changedKeyOnly()->displayData();
+					}				
+				?>	
+			</div>		
 			<table id='mainTableId' style='' class="table table-bordered table-striped table-condensed" data-counter='-1' data-detail-type='left'>
 				<thead class='w3-indigo' style='text-transform:uppercase;'>
 					<th class='w3-center' style='vertical-align:middle;'></th>
@@ -980,7 +987,7 @@ PMSTemplates::includeFooter();
             fixedColumns: true,
             deferRender: true,
 			// "deferLoading": 57,
-            scrollY    	: 505,
+            scrollY    	: 555,
             scrollX		: cond,
             scroller    : {
                 loadingIndicator    : true
