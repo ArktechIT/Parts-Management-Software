@@ -199,7 +199,7 @@ $itemHeightFilter = isset($_POST['itemHeightFilter']) ? $_POST['itemHeightFilter
 $itemHeightFromFilter = isset($_POST['itemHeightFromFilter']) ? $_POST['itemHeightFromFilter'] : '';
 $itemHeightToFilter = isset($_POST['itemHeightToFilter']) ? $_POST['itemHeightToFilter'] : '';
 
-$added = "";
+$added = $added2 = "";
 if($process != '')
 {
 	$processArray = [];
@@ -219,6 +219,7 @@ if($process != '')
 	if(count($processArray) > 0)
 	{
 		$added .= " AND processCode IN(".implode(",",$processArray).")";
+		$added2 = " AND EXISTS(SELECT partId FROM cadcam_partprocess WHERE cadcam_partprocess.partId = cadcam_parts.partId AND cadcam_partprocess.processCode IN(".implode(",",$processArray).") GROUP BY cadcam_partprocess.partId, cadcam_partprocess.patternId HAVING COUNT(processCode) = ".count($processArray).")";
 	}
 }
 
@@ -460,6 +461,8 @@ else
 		$sqlFilter .= " AND partId IN (SELECT DISTINCT partId FROM cadcam_partprocess WHERE partId > 0 ".$added.")";
 	}
 }
+
+$sqlFilter .= $added2;
 
 $totalRecords = 0;
 
